@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  rffmpeg:
+    image: ghcr.io/aleksasiriski/rffmpeg-node:latest
+    environment:
+      - SSH_USERS=root:0:0
+      - SSH_ENABLE_ROOT=true
+    ports:
+      - "${WORKER_LAN_ONLY_IP:-}:22:22"
+    volumes:
+      - /root/.ssh/authorized_keys:/etc/authorized_keys/root:Z
+      - jellyfin-conf:/config
+      - media:/media:ro # no need for read-write
+# add this for VAAPI support, for nvenc refer to official jellyfin docs
+#    devices:
+#      - /dev/dri:/dev/dri
+    restart: always
+volumes:
+  jellyfin-conf:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: :/config
+      o: addr=$JELLYFIN_LAN_ONLY_IP,rw,nfsvers=4,sync,actimeo=1
+  media:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: //$MEDIA_USERNAME.your-storagebox.de/$MEDIA_USERNAME
+      o: ro,addr=$MEDIA_USERNAME.your-storagebox.de,username=$MEDIA_USERNAME,password=$MEDIA_PASSWORD # no need for read-write
