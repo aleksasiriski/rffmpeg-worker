@@ -16,7 +16,7 @@ RUN apt clean autoclean -y && \
 
 EXPOSE 22
 
-VOLUME
+VOLUME /config
 
 ENTRYPOINT ["/entry.sh"]
 
