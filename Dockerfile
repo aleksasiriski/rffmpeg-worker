@@ -2,7 +2,7 @@ FROM docker.io/jellyfin/jellyfin:10.8.8
 
 COPY entry.sh /entry.sh
 
-RUN rm -rf /config /cache /jellyfin && \
+RUN rm -rf /config/* /cache/* /jellyfin && \
     chmod +x /entry.sh && \
     apt update && \
     apt install --no-install-recommends --no-install-suggests -y bash git openssh-server rsync augeas-tools libvshadow-utils && \
