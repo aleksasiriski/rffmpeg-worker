@@ -1,49 +1,39 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: rffmpeg-workers
+  name: jellyfin
   namespace: jellyfin
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: rffmpeg-workers
-      task: rffmpeg-workers
+      app: jellyfin
+      task: jellyfin
   template:
     metadata:
       labels:
-        app: rffmpeg-workers
-        task: rffmpeg-workers
+        app: jellyfin
+        task: jellyfin
     spec:
       containers:
-        - name: rffmpeg-worker
-          image: ghcr.io/aleksasiriski/rffmpeg-worker:latest
+        - name: jellyfin
+          image: ghcr.io/aleksasiriski/jellyfin-rffmpeg:latest
           env:
             - name: TZ
               value: "Europe/Berlin"
-            - name: SSH_USERS
-              value: "root:0:0"
-            - name: SSH_ENABLE_ROOT
-              value: "true"
           ports:
-            - name: worker-ssh
-              containerPort: 22
+            - name: jellyfin-web
+              containerPort: 8096
           volumeMounts:
-            - mountPath: "/etc/authorized_keys/root"
-              subPath: root
-              name: rffmpeg-worker-secrets
-              readOnly: true
+            - mountPath: "/config"
+              name: jellyfin-conf-pvc
             - mountPath: "/var/storage/media"
               name: storage-box-media
-              readOnly: true
             - mountPath: "/config/data/subtitles"
               name: jellyfin-subtitles
             - mountPath: "/config/transcodes"
               name: jellyfin-transcodes
       volumes:
-        - name: rffmpeg-worker-secrets
-          secret:
-            secretName: rffmpeg-worker
         - name: storage-box-media
           persistentVolumeClaim:
             claimName: storage-box-media
@@ -53,3 +43,13 @@ spec:
         - name: jellyfin-transcodes
           persistentVolumeClaim:
             claimName: jellyfin-transcodes
+  volumeClaimTemplates:
+    - metadata:
+        name: jellyfin-conf-pvc
+      spec:
+        storageClassName: do-block-storage
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
