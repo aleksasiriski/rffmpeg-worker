@@ -11,6 +11,7 @@ This container can be used for both dedicated boxes (or with [hcloud-rffmpeg](ht
 On Kubernetes you can use [Longhorn](https://longhorn.io) RWX volumes (NFSv4) and mount the said paths to Jellyfin host and workers (must be exactly same mount points!).
 
 Here's an example [deployment](https://github.com/aleksasiriski/rffmpeg-worker/blob/main/deployment.yaml) of workers. Then just add it as a rffmpeg host:
-```
+
+```bash
 kubectl exec -n jellyfin jellyfin-0 -- rffmpeg add --name rffmpeg-workers rffmpeg-workers.jellyfin.svc.cluster.local
 ```
