@@ -12,5 +12,5 @@ On Kubernetes you can use [Longhorn](https://longhorn.io) RWX volumes (NFSv4) an
 
 Here's an example [deployment](https://github.com/aleksasiriski/rffmpeg-worker/blob/main/deployment.yaml) of workers. Then just add it as a rffmpeg host:
 ```
-kubectl exec -n jellyfin jellyfin-0 -- rffmpeg add --name rffmpeg-workers rffmpeg-worker.jellyfin.svc.cluster.local
+kubectl exec -n jellyfin jellyfin-0 -- rffmpeg add --name rffmpeg-workers rffmpeg-workers.jellyfin.svc.cluster.local
 ```
