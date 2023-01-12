@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rffmpeg-worker
+  name: rffmpeg-workers
   namespace: jellyfin
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: rffmpeg-worker
-      task: rffmpeg-worker
+      app: rffmpeg-workers
+      task: rffmpeg-workers
   template:
     metadata:
       labels:
-        app: rffmpeg-worker
-        task: rffmpeg-worker
+        app: rffmpeg-workers
+        task: rffmpeg-workers
     spec:
       containers:
         - name: rffmpeg-worker
