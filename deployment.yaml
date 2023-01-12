@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rffmpeg-worker
+  namespace: jellyfin
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: rffmpeg-worker
+      task: rffmpeg-worker
+  template:
+    metadata:
+      labels:
+        app: rffmpeg-worker
+        task: rffmpeg-worker
+    spec:
+      containers:
+        - name: rffmpeg-worker
+          image: ghcr.io/aleksasiriski/rffmpeg-worker:latest
+          env:
+            - name: TZ
+              value: "Europe/Berlin"
+            - name: SSH_USERS
+              value: "root:0:0"
+            - name: SSH_ENABLE_ROOT
+              value: "true"
+          ports:
+            - name: worker-ssh
+              containerPort: 22
+          volumeMounts:
+            - mountPath: "/etc/authorized_keys/root"
+              subPath: root
+              name: rffmpeg-worker-secrets
+              readOnly: true
+            - mountPath: "/var/storage/media"
+              name: storage-box-media
+              readOnly: true
+            - mountPath: "/config/data/subtitles"
+              name: jellyfin-subtitles
+            - mountPath: "/config/transcodes"
+              name: jellyfin-transcodes
+      volumes:
+        - name: rffmpeg-worker-secrets
+          secret:
+            secretName: rffmpeg-worker
+        - name: storage-box-media
+          persistentVolumeClaim:
+            claimName: storage-box-media
+        - name: jellyfin-subtitles
+          persistentVolumeClaim:
+            claimName: jellyfin-subtitles
+        - name: jellyfin-transcodes
+          persistentVolumeClaim:
+            claimName: jellyfin-transcodes
