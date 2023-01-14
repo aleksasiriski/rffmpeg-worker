@@ -8,7 +8,7 @@ This container can be used for both dedicated boxes (or with [hcloud-rffmpeg](ht
 
 ### Kubernetes
 
-On Kubernetes you can use [Longhorn](https://longhorn.io) RWX volumes (NFSv4) and mount the said paths to Jellyfin host and workers (must be exactly same mount points!).
+On Kubernetes you can use [Longhorn](https://longhorn.io) RWX volumes (NFSv4) and mount said paths to Jellyfin host and workers (must be exactly the same mount points!).
 
 Here's an example [deployment](https://github.com/aleksasiriski/rffmpeg-worker/blob/main/Kubernetes) of workers. Then just add it as a rffmpeg host:
 
