@@ -17,18 +17,33 @@ spec:
     spec:
       affinity:
         podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - jellyfin
-              - key: task
-                operator: In
-                values:
-                - jellyfin
-            topologyKey: "kubernetes.io/hostname"
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 20
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - jellyfin
+                - key: task
+                  operator: In
+                  values:
+                  - jellyfin
+              topologyKey: "kubernetes.io/hostname"
+          - weight: 10
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - rffmpeg-workers
+                - key: task
+                  operator: In
+                  values:
+                  - rffmpeg-workers
+              topologyKey: "kubernetes.io/hostname"
       containers:
         - name: rffmpeg-worker
           image: ghcr.io/aleksasiriski/rffmpeg-worker:latest
