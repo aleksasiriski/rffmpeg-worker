@@ -15,6 +15,20 @@ spec:
         app: rffmpeg-workers
         task: rffmpeg-workers
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - jellyfin
+              - key: task
+                operator: In
+                values:
+                - jellyfin
+            topologyKey: "kubernetes.io/hostname"
       containers:
         - name: rffmpeg-worker
           image: ghcr.io/aleksasiriski/rffmpeg-worker:latest
