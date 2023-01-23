@@ -1,4 +1,4 @@
-FROM docker.io/jellyfin/jellyfin:10.8.8
+FROM docker.io/jellyfin/jellyfin:10.8.9
 
 COPY entry.sh /entry.sh
 
