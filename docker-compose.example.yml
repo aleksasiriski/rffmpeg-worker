@@ -12,7 +12,7 @@ services:
       - jellyfin-conf:/config
       - jellyfin-transcodes:/transcodes
       - media:/media:ro # no need for read-write
-# add this for VAAPI support, for nvenc refer to official jellyfin docs
+# add this for VAAPI support, for nvenc go to official jellyfin docs
 #    devices:
 #      - /dev/dri:/dev/dri
     restart: always
@@ -21,13 +21,13 @@ volumes:
     driver: local
     driver_opts:
       type: nfs
-      device: :/config
+      device: :/config/data/subtitles
       o: addr=$JELLYFIN_LAN_ONLY_IP,rw,nfsvers=4,sync,actimeo=1
   jellyfin-transcodes:
     driver: local
     driver_opts:
       type: nfs
-      device: :/transcodes
+      device: :/config/transcodes
       o: addr=$JELLYFIN_LAN_ONLY_IP,rw,nfsvers=4,sync,actimeo=1
   media:
     driver: local
