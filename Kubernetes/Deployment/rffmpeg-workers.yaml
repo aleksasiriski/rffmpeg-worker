@@ -47,6 +47,7 @@ spec:
       containers:
         - name: rffmpeg-worker
           image: ghcr.io/aleksasiriski/rffmpeg-worker:latest
+          imagePullPolicy: Always
           env:
             - name: TZ
               value: "Europe/Berlin"

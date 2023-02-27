@@ -18,6 +18,7 @@ spec:
       containers:
         - name: jellyfin
           image: ghcr.io/aleksasiriski/jellyfin-rffmpeg:latest
+          imagePullPolicy: Always
           env:
             - name: TZ
               value: "Europe/Berlin"
