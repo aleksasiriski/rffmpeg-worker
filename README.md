@@ -1,5 +1,5 @@
 # rffmpeg-worker for jellyfin-rffmpeg
-This container can be used for both dedicated boxes (or with [hcloud-rffmpeg](https://github.com/aleksasiriski/hcloud-rffmpeg)) and Kubernetes!
+This container can be used for both dedicated boxes (or with [rffmpeg-autoscaler](https://github.com/aleksasiriski/rffmpeg-autoscaler)) and Kubernetes!
 
 ### Setup
 
