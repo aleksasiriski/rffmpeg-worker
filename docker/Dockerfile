@@ -1,6 +1,6 @@
 FROM docker.io/jellyfin/jellyfin:10.8.9
 
-COPY entry.sh /entry.sh
+COPY ["docker/entry.sh", "/entry.sh"]
 
 RUN rm -rf /config/* /cache/* /jellyfin && \
     chmod +x /entry.sh && \
