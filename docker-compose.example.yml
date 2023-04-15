@@ -9,25 +9,32 @@ services:
       - "${WORKER_LAN_ONLY_IP:-}:22:22"
     volumes:
       - /root/.ssh/authorized_keys:/etc/authorized_keys/root:Z
-      - jellyfin-conf:/config
-      - jellyfin-transcodes:/transcodes
+      - jellyfin-cache:/config/cache
+      - jellyfin-transcodes:/config/transcodes
+      - jellyfin-subtitles:/config/data/subtitles
       - media:/media:ro # no need for read-write
 # add this for VAAPI support, for nvenc go to official jellyfin docs
 #    devices:
 #      - /dev/dri:/dev/dri
     restart: always
 volumes:
-  jellyfin-conf:
+  jellyfin-cache:
     driver: local
     driver_opts:
       type: nfs
-      device: :/config/data/subtitles
+      device: :/config/cache
       o: addr=$JELLYFIN_LAN_ONLY_IP,rw,nfsvers=4,sync,actimeo=1
   jellyfin-transcodes:
     driver: local
     driver_opts:
       type: nfs
       device: :/config/transcodes
+      o: addr=$JELLYFIN_LAN_ONLY_IP,rw,nfsvers=4,sync,actimeo=1
+  jellyfin-subtitles:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: :/config/data/subtitles
       o: addr=$JELLYFIN_LAN_ONLY_IP,rw,nfsvers=4,sync,actimeo=1
   media:
     driver: local
