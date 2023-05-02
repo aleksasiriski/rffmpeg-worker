@@ -4,7 +4,7 @@ This container can be used for both dedicated boxes (or with [rffmpeg-autoscaler
 ### Setup
 
 * The workers only need access to the following directories:
-  - `/config/cache` (by default it's `/cache` unless you're using my [Jellyfin](https://github.com/aleksasiriski/jellyfin-rffmpeg) image)
+  - `/config/cache` (by default it's `/cache` unless you're using my [Jellyfin](https://github.com/aleksasiriski/rffmpeg-go/pkgs/container/jellyfin-rffmpeg) image)
   - `/config/transcodes`
   - `/config/data/subtitles`
 
