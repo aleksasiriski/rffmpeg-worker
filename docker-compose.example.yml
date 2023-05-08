@@ -3,8 +3,8 @@ services:
   rffmpeg-worker:
     image: ghcr.io/aleksasiriski/rffmpeg-worker:latest
     environment:
-      - SSH_USERS=root:0:0
-      - SSH_ENABLE_ROOT=true
+      - SSH_USERS=kah:568:568
+#      - SSH_ENABLE_ROOT=true # enable this if the above line is root:0:0
     ports:
       - "${WORKER_LAN_ONLY_IP:-}:22:22"
     volumes:
