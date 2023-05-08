@@ -8,7 +8,7 @@ services:
     ports:
       - "${WORKER_LAN_ONLY_IP:-}:22:22"
     volumes:
-      - /root/.ssh/authorized_keys:/etc/authorized_keys/root:Z
+      - ./authorized_keys:/etc/authorized_keys/kah:Z
       - jellyfin-cache:/config/cache
       - jellyfin-transcodes:/config/transcodes
       - jellyfin-subtitles:/config/data/subtitles
