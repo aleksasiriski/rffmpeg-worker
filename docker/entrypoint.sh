@@ -122,6 +122,50 @@ if [ -v MOTD ]; then
     echo -e "$MOTD" > /etc/motd
 fi
 
+# PasswordAuthentication (disabled by default)
+if [[ "${SSH_ENABLE_PASSWORD_AUTH}" == "true" ]] || [[ "${SSH_ENABLE_ROOT_PASSWORD_AUTH}" == "true" ]]; then
+    echo 'set /files/etc/ssh/sshd_config/PasswordAuthentication yes' | augtool -s 1> /dev/null
+    echo "WARNING: password authentication enabled."
+
+    # Root Password Authentification
+    if [[ "${SSH_ENABLE_ROOT_PASSWORD_AUTH}" == "true" ]]; then
+        echo 'set /files/etc/ssh/sshd_config/PermitRootLogin yes' | augtool -s 1> /dev/null
+        echo "WARNING: password authentication for root user enabled."
+    else
+        echo "INFO: password authentication is not enabled for the root user. Set SSH_ENABLE_ROOT_PASSWORD_AUTH=true to enable."
+    fi
+
+else
+    echo 'set /files/etc/ssh/sshd_config/PasswordAuthentication no' | augtool -s 1> /dev/null
+    echo "INFO: password authentication is disabled by default. Set SSH_ENABLE_PASSWORD_AUTH=true to enable."
+fi
+
+configure_ssh_options() {
+    # Enable AllowTcpForwarding
+    if [[ "${TCP_FORWARDING}" == "true" ]]; then
+        echo 'set /files/etc/ssh/sshd_config/AllowTcpForwarding yes' | augtool -s 1> /dev/null
+    fi
+    # Enable GatewayPorts
+    if [[ "${GATEWAY_PORTS}" == "true" ]]; then
+        echo 'set /files/etc/ssh/sshd_config/GatewayPorts yes' | augtool -s 1> /dev/null
+    fi
+    # Disable SFTP
+    if [[ "${DISABLE_SFTP}" == "true" ]]; then
+        printf '%s\n' \
+            'rm /files/etc/ssh/sshd_config/Subsystem/sftp' \
+            'rm /files/etc/ssh/sshd_config/Subsystem' \
+        | augtool -s 1> /dev/null
+    fi
+}
+
+# Run scripts in /etc/entrypoint.d
+for f in /etc/entrypoint.d/*; do
+    if [[ -x ${f} ]]; then
+        echo ">> Running: ${f}"
+        ${f}
+    fi
+done
+
 stop() {
     echo "Received SIGINT or SIGTERM. Shutting down $DAEMON"
     # Get PID
