@@ -62,7 +62,7 @@ RUN mkdir -p /etc/authorized_keys \
 
 EXPOSE 22
 
-COPY ./apps/rffmpeg-worker/entrypoint.sh /entrypoint.sh
+COPY ./docker/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/sbin/sshd", "-D", "-e", "-f", "/etc/ssh/sshd_config"]
 
