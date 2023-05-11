@@ -62,6 +62,9 @@ RUN mkdir -p /etc/authorized_keys \
     && echo "AuthorizedKeysFile .ssh/authorized_keys /etc/authorized_keys/%u" | tee -a /etc/ssh/sshd_config \
     && cp -a /etc/ssh /etc/ssh.cache
 
+# removing onedr0p's kah user so that the script can make a new one
+RUN userdel kah
+
 EXPOSE 22
 
 COPY ./docker/entrypoint.sh /entrypoint.sh
